@@ -18,15 +18,16 @@ public class Sensors {
 	public final static Port four;
 	
 	public static final SensorModes ultrasonic;
-	public static final SensorModes color = null;
+	public static final SensorModes reflect;
 	public static final SensorModes touch1;
-	public static final SensorModes touch2;
+	//public static final SensorModes touch2;
 	public static final SensorModes gyro;
 	
 	public static final SampleProvider distance;
 	public static final SampleProvider heading;
 	public static final SampleProvider isPressed1;
-	public static final SampleProvider isPressed2;
+	public static final SampleProvider isPressed2 = null;
+	public static final SampleProvider blackness;
 	
 	public static final DifferentialPilot pilot = new DifferentialPilot(3, 3, Motor.A, Motor.B);
 	
@@ -38,15 +39,16 @@ public class Sensors {
 		four = LocalEV3.get().getPort("S4");
 		
 		ultrasonic = new EV3UltrasonicSensor(one);
-		//color = new EV3ColorSensor(two);
+		reflect = new EV3ColorSensor(two);
 		touch1 = new EV3TouchSensor(three);
-		touch2 = new EV3TouchSensor(four);
+		//touch2 = new EV3TouchSensor(four);
 		gyro = new EV3GyroSensor(two);
 		
 		distance = ultrasonic.getMode("Distance");
 		heading = gyro.getMode("Angle");
 		isPressed1 = touch1.getMode("Touch");
-		isPressed2 = touch2.getMode("Touch");
+		//isPressed2 = touch2.getMode("Touch");
+		blackness = reflect.getMode("Red");
 	}
 	
 	public static float getReading(SampleProvider s){
