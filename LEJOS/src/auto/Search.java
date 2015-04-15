@@ -8,7 +8,7 @@ import lejos.robotics.SampleProvider;
 import lejos.robotics.subsumption.Behavior;
 
 public class Search implements Behavior{
-	
+
 	static boolean go = true;
 
 	@Override
@@ -19,16 +19,24 @@ public class Search implements Behavior{
 	@Override
 	public void action() {
 		go = true;
-		float angle = getClosestObstacleHeading(10);
-		align(angle);
+		System.out.println("Searching");
+		search();
 	}
 
 	@Override
 	public void suppress() {
 		go = false;
 	}
-	
-	public static float getClosestObstacleHeading(int resolution){
+
+	private static void search(){
+		while(go){
+			float angle = getClosestObstacleHeading(10);
+			align(angle);
+			driveTowardObject();
+		}
+	}
+
+	private static float getClosestObstacleHeading(int resolution){
 		Map<Float, Float> map = scan(resolution);
 		float minDist = Float.MAX_VALUE;
 		float bestHeading = 0;
@@ -41,7 +49,18 @@ public class Search implements Behavior{
 		return bestHeading;
 	}
 
-	public static Map<Float, Float> scan(int resolution){ //res is the number of samples to take.
+	private static void driveTowardObject(){
+		float currDist = Sensors.getReading(Sensors.distance);
+		float lastDist = currDist;
+
+		while(currDist <= lastDist && go){
+			Sensors.pilot.travel(5);
+			lastDist = currDist;
+			currDist = Sensors.getReading(Sensors.distance);
+		}
+	}
+
+	private static Map<Float, Float> scan(int resolution){ //res is the number of samples to take.
 		Map<Float, Float> output = new HashMap<Float, Float>();
 
 		int currentAngle = 0;
@@ -51,14 +70,14 @@ public class Search implements Behavior{
 			float dist = Sensors.getReading(Sensors.distance);
 			output.put(heading, dist);
 		}
-		
+
 		return output;
 	}
-	
-	public static void align(float angle){
+
+	private static void align(float angle){
 		final int tolerance = 2;
 		float currentAngle = 0;
-		
+
 		do{
 			currentAngle = Sensors.getReading(Sensors.heading);
 			Sensors.pilot.rotate(currentAngle-angle);

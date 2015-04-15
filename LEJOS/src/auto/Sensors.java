@@ -17,11 +17,11 @@ public class Sensors {
 	public final static Port three;
 	public final static Port four;
 	
-	public static final SensorModes ultrasonic;
-	public static final SensorModes reflect;
-	public static final SensorModes touch1;
-	//public static final SensorModes touch2;
-	public static final SensorModes gyro;
+	private static final SensorModes ultrasonic;
+	private static final SensorModes reflect;
+	private static final SensorModes touch1;
+	//private static final SensorModes touch2;
+	private static final SensorModes gyro;
 	
 	public static final SampleProvider distance;
 	public static final SampleProvider heading;

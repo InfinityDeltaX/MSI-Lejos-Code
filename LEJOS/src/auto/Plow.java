@@ -2,21 +2,17 @@ package auto;
 
 import lejos.robotics.subsumption.Behavior;
 
-public class WatchLine implements Behavior{
+public class Plow implements Behavior {
 
 	@Override
 	public boolean takeControl() {
-		return onLine();
-	}
-	
-	private boolean onLine(){
-		return Sensors.getReading(Sensors.blackness) > 0.5;
+		return Sensors.getReading(Sensors.isPressed1) > 0.5;
 	}
 
 	@Override
 	public void action() {
-		System.out.println("On Line!");
-		Sensors.pilot.travel(10);
+		System.out.println("Plowing");
+		Sensors.pilot.forward();
 	}
 
 	@Override
